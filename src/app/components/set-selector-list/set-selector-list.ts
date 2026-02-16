@@ -185,8 +185,8 @@ export class SetSelectorList implements OnInit {
    * Formatiert das Datum von YYYY-MM-DD zu YYYY-MM
    */
   formatDate(dateString: string): string {
-    const [year, month] = dateString.split('-');
-    return `${year}-${month}`;
+    const [year, month, day] = dateString.split('-');
+    return `${year}-${month}-${day}`;
   }
 
   /**

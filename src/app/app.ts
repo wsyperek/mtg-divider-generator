@@ -49,6 +49,12 @@ export class App {
    */
   onSetAdded(newSet: MtgSet): void {
     // Prüfen ob Set bereits existiert
+    // Skip digital-only sets (e.g. MTG Arena)
+    if (newSet.digital) {
+      alert(`Set "${newSet.code}" ist nur digital verfügbar (MTG Arena). Divider nicht erforderlich.`);
+      return;
+    }
+
     const exists = this.rawSets().some(set => set.code === newSet.code);
 
     if (exists) {
@@ -96,10 +102,15 @@ export class App {
    */
   onBatchSetsAdded(newSets: MtgSet[]): void {
     const existingCodes = new Set(this.rawSets().map(s => s.code));
-    const uniqueNewSets = newSets.filter(set => !existingCodes.has(set.code));
+
+    // Filter out existing and digital-only sets
+    const digitalSets = newSets.filter(s => !!s.digital);
+    const uniqueNewSets = newSets.filter(set => !existingCodes.has(set.code) && !set.digital);
 
     if (uniqueNewSets.length === 0) {
-      alert('Alle ausgewählten Sets sind bereits hinzugefügt');
+      let msg = 'Keine neuen Sets hinzugefügt.';
+      if (digitalSets.length > 0) msg += ` ${digitalSets.length} digitale Set(s) wurden übersprungen.`;
+      alert(msg);
       this.closeSetSelector();
       return;
     }
@@ -108,13 +119,13 @@ export class App {
     this.rawSets.update(current => [...current, ...uniqueNewSets]);
 
     // Feedback und Modal schließen
-    const skipped = newSets.length - uniqueNewSets.length;
-    if (skipped > 0) {
-      alert(`${uniqueNewSets.length} Sets hinzugefügt. ${skipped} Set(s) waren bereits vorhanden.`);
-    } else {
-      alert(`${uniqueNewSets.length} Sets erfolgreich hinzugefügt!`);
-    }
+    const skippedExisting = newSets.length - (uniqueNewSets.length + digitalSets.length);
+    let messageParts: string[] = [];
+    messageParts.push(`${uniqueNewSets.length} Sets hinzugefügt.`);
+    if (skippedExisting > 0) messageParts.push(`${skippedExisting} Set(s) waren bereits vorhanden.`);
+    if (digitalSets.length > 0) messageParts.push(`${digitalSets.length} digitale Set(s) übersprungen (Arena-only).`);
 
+    alert(messageParts.join(' '));
     this.closeSetSelector();
   }
 }

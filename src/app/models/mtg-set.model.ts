@@ -3,6 +3,7 @@ export interface MtgSet {
   name: string;          // Set-Name (z.B. "Modern Horizons 3")
   released_at: string;   // Release-Datum (ISO format: "YYYY-MM-DD")
   icon_svg_uri: string;  // URL zum Set-Logo (SVG)
+  digital?: boolean;     // true, wenn Set nur digital (z.B. MTG Arena)
   set_type: string;      // Set-Typ (z.B. "expansion", "core", "commander")
   card_count: number;    // Anzahl der Karten im Set
   block?: string;        // Block-Name (optional)
@@ -16,6 +17,7 @@ export interface ScryfallSetResponse {
   name: string;
   released_at: string;
   icon_svg_uri: string;
+  digital?: boolean;
   set_type: string;
   card_count: number;
   block?: string;

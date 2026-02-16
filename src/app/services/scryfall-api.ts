@@ -47,6 +47,7 @@ export class ScryfallApi {
       name: response.name,
       released_at: response.released_at,
       icon_svg_uri: response.icon_svg_uri,
+      digital: !!response.digital,
       set_type: response.set_type,
       card_count: response.card_count,
       block: response.block
