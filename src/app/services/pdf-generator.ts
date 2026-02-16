@@ -115,7 +115,7 @@ export class PdfGenerator {
       const cards = element.querySelectorAll('.divider-card');
       const cardCount = cards.length;
       const cardWidth = 63; // mm (CSS-definiert)
-      const cardHeight = 100; // mm (CSS-definiert)
+      const cardHeight = 99; // mm (CSS-definiert)
       const gapSize = 10; // mm (CSS: gap in cards-grid)
 
       // Anzahl Spalten und Zeilen

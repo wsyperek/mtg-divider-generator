@@ -1,9 +1,9 @@
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 63mm);
-  gap: 10mm;
+  gap: 0;
   justify-content: center;
-  padding: 20px;
+  padding: 0;
 }
 
 .card-wrapper {
@@ -14,7 +14,7 @@
 @media screen and (max-width: 1024px) {
   .cards-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 0;
   }
 }
 
@@ -22,7 +22,7 @@
 @media screen and (max-width: 640px) {
   .cards-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 0;
   }
 }
 
@@ -42,7 +42,7 @@
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 63mm);
-    gap: 8mm;
+    gap: 0mm;
     page-break-after: always;
   }
 
