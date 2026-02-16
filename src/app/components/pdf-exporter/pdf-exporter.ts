@@ -6,7 +6,7 @@ import { PdfGenerator } from '../../services/pdf-generator';
   selector: 'app-pdf-exporter',
   imports: [CommonModule],
   templateUrl: './pdf-exporter.html',
-  styleUrl: './pdf-exporter.css',
+  styleUrls: ['./pdf-exporter.css'],
 })
 export class PdfExporter {
   private readonly pdfGenerator = inject(PdfGenerator);

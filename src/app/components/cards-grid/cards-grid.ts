@@ -7,7 +7,7 @@ import { DividerCard } from '../divider-card/divider-card';
   selector: 'app-cards-grid',
   imports: [CommonModule, DividerCard],
   templateUrl: './cards-grid.html',
-  styleUrl: './cards-grid.css',
+  styleUrls: ['./cards-grid.css'],
 })
 export class CardsGrid {
   // Input: Array von MTG Sets

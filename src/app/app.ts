@@ -12,7 +12,7 @@ type SortOption = 'added' | 'name' | 'date-desc' | 'date-asc';
   selector: 'app-root',
   imports: [SetInputForm, SetSelectorList, CardsGrid, PdfExporter, FormsModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
   protected readonly title = 'MTG Divider Cards Generator';

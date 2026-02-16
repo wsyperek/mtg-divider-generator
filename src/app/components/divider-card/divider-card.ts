@@ -6,7 +6,7 @@ import { MtgSet } from '../../models/mtg-set.model';
   selector: 'app-divider-card',
   imports: [CommonModule],
   templateUrl: './divider-card.html',
-  styleUrl: './divider-card.css',
+  styleUrls: ['./divider-card.css'],
 })
 export class DividerCard {
   // Input Property für Set-Daten
