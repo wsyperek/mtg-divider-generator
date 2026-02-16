@@ -1,0 +1,99 @@
+<div class="bg-white shadow-md rounded-lg p-6 mb-6">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800">MTG Set hinzufügen</h2>
+
+  <!-- Set-Typ Filter -->
+  @if (availableSetTypes.length > 0) {
+    <div class="mb-4">
+      <label for="setTypeFilter" class="block text-sm font-medium text-gray-700 mb-2">
+        Set-Typ Filters
+      </label>
+      <select
+        id="setTypeFilter"
+        [(ngModel)]="selectedSetType"
+        (change)="onSetTypeChange()"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      >
+        @for (type of availableSetTypes; track type.value) {
+          <option [value]="type.value">{{ type.label }}</option>
+        }
+      </select>
+    </div>
+  }
+
+  <div class="flex gap-4">
+    <!-- Input-Feld mit Autocomplete -->
+    <div class="flex-1 relative">
+      <label for="setCode" class="block text-sm font-medium text-gray-700 mb-2">
+        Set-Kürzel, Name oder Datum (z.B. MH3, Modern Horizons, 2024-06)
+      </label>
+      <input
+        id="setCode"
+        type="text"
+        [(ngModel)]="setCode"
+        (input)="onInput()"
+        (keydown)="onKeyDown($event)"
+        (blur)="onBlur()"
+        [disabled]="isLoading"
+        placeholder="Set-Kürzel oder Name eingeben..."
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+        autocomplete="off"
+      />
+
+      <!-- Autocomplete-Dropdown -->
+      @if (showSuggestions && filteredSets().length > 0) {
+        <div class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+          @for (set of filteredSets(); track set.code; let i = $index) {
+            <button
+              type="button"
+              (click)="selectSet(set)"
+              [class.bg-blue-100]="i === selectedIndex"
+              class="w-full px-4 py-3 text-left hover:bg-gray-100 border-b border-gray-200 last:border-b-0 focus:outline-none transition-colors"
+            >
+              <div class="flex items-center gap-3">
+                <!-- Set Logo -->
+                @if (set.icon_svg_uri) {
+                  <img
+                    [src]="set.icon_svg_uri"
+                    [alt]="set.name"
+                    class="w-6 h-6 object-contain flex-shrink-0"
+                  />
+                }
+                <!-- Set Info -->
+                <div class="flex-1 min-w-0">
+                  <div class="font-semibold text-gray-900 truncate">{{ set.name }}</div>
+                  <div class="text-sm text-gray-600">
+                    <span class="font-medium">{{ set.code }}</span>
+                    <span class="mx-2">•</span>
+                    <span>{{ set.released_at }}</span>
+                  </div>
+                </div>
+              </div>
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Hinzufügen-Button -->
+    <div class="flex items-end">
+      <button
+        (click)="addSet()"
+        [disabled]="isLoading || !setCode.trim()"
+        class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+      >
+        @if (isLoading) {
+          <span>Lädt...</span>
+        } @else {
+          <span>Hinzufügen</span>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Error-Nachricht -->
+  @if (errorMessage) {
+    <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+      <p class="font-medium">{{ errorMessage }}</p>
+    </div>
+  }
+</div>

@@ -1,0 +1,63 @@
+/* Modal-Content Container */
+.modal-content {
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Set-Row Hover-Effekt */
+.set-row {
+  user-select: none;
+}
+
+.set-row:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Checkbox Styling (für bessere Sichtbarkeit) */
+.set-row input[type="checkbox"] {
+  cursor: pointer;
+}
+
+/* Scrollbar Styling für Sets-Liste */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+  .modal-content {
+    max-height: 95vh;
+  }
+
+  .set-row {
+    padding: 0.75rem;
+  }
+
+  .set-row .grid {
+    grid-template-columns: 1fr;
+  }
+}

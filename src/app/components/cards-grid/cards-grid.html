@@ -1,0 +1,26 @@
+<div class="cards-grid-container">
+  @if (sets().length === 0) {
+    <div class="text-center py-12 text-gray-500">
+      <p class="text-lg">Noch keine Sets hinzugefügt.</p>
+      <p class="text-sm mt-2">Füge Sets über das Formular oben hinzu.</p>
+    </div>
+  } @else {
+    <div class="cards-grid">
+      @for (set of sets(); track set.code; let i = $index) {
+        <div class="card-wrapper relative">
+          <!-- Entfernen-Button -->
+          <button
+            (click)="removeSet(i)"
+            class="remove-button absolute -top-2 -right-2 z-10 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 print:hidden"
+            title="Set entfernen"
+          >
+            ×
+          </button>
+
+          <!-- Divider Card -->
+          <app-divider-card [mtgSet]="set" />
+        </div>
+      }
+    </div>
+  }
+</div>

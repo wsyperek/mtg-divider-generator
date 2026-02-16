@@ -1,0 +1,93 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8 shadow-lg print:hidden">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold mb-2">{{ title }}</h1>
+      <p class="text-blue-100">
+        Erstelle professionelle Trenner-Karten für deine Magic: The Gathering Sammlung
+      </p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Input Form -->
+    <app-set-input-form (setAdded)="onSetAdded($event)" />
+
+    <!-- Button für Set-Selektor -->
+    <div class="mb-6 print:hidden">
+      <button
+        (click)="openSetSelector()"
+        class="w-full px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors shadow-md"
+      >
+        📋 Sets aus Liste auswählen
+      </button>
+    </div>
+
+    <!-- Sortierung -->
+    @if (sets().length > 0) {
+      <div class="bg-white shadow-md rounded-lg p-4 mb-6 print:hidden">
+        <div class="flex items-center gap-4">
+          <label for="sortOption" class="font-semibold text-gray-700">
+            Sortierung:
+          </label>
+          <select
+            id="sortOption"
+            [(ngModel)]="sortOption"
+            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="added">Hinzufügen-Reihenfolge</option>
+            <option value="name">Name (A-Z)</option>
+            <option value="date-desc">Release-Datum (neueste zuerst)</option>
+            <option value="date-asc">Release-Datum (älteste zuerst)</option>
+          </select>
+          <span class="text-sm text-gray-600 ml-auto">
+            {{ sets().length }} Set(s) hinzugefügt
+          </span>
+        </div>
+      </div>
+
+      <!-- PDF Exporter -->
+      <app-pdf-exporter
+        [targetElementId]="'cards-grid-container'"
+        [setsCount]="sets().length"
+      />
+    }
+
+    <!-- Cards Grid -->
+    <div id="cards-grid-container">
+      <app-cards-grid
+        [sets]="sets()"
+        (setRemoved)="onSetRemoved($event)"
+      />
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6 mt-12 print:hidden">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-sm">
+        Powered by
+        <a href="https://scryfall.com" target="_blank" rel="noopener" class="text-blue-400 hover:text-blue-300">
+          Scryfall API
+        </a>
+        | Kartengröße: 63mm x 100mm
+      </p>
+    </div>
+  </footer>
+
+  <!-- Modal: Set-Selektor -->
+  @if (showSetSelector()) {
+    <div
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 print:hidden"
+      (click)="closeSetSelector()"
+    >
+      <div (click)="$event.stopPropagation()">
+        <app-set-selector-list
+          (setsSelected)="onBatchSetsAdded($event)"
+          (closeRequested)="closeSetSelector()"
+        />
+      </div>
+    </div>
+  }
+</div>

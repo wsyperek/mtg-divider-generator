@@ -1,0 +1,97 @@
+.divider-card {
+  /* Exakte Kartengröße: 63mm Breite x 100mm Höhe */
+  width: 63mm;
+  height: 100mm;
+
+  /* Für Print-Ansicht */
+  box-sizing: border-box;
+
+  /* Verhindert Page-Break innerhalb der Karte */
+  page-break-inside: avoid;
+  break-inside: avoid;
+
+  /* Position für Schnittlinien */
+  position: relative;
+}
+
+/* Schnittlinien - nur sichtbar im Print und Screen (nicht im PDF-Export) */
+.card-wrapper {
+  position: relative;
+}
+
+/* Schnittlinien verstecken für PDF-Export */
+.card-wrapper.hide-cutlines::before,
+.card-wrapper.hide-cutlines::after,
+.divider-card.hide-cutlines::before,
+.divider-card.hide-cutlines::after {
+  display: none !important;
+}
+
+/* Horizontale Schnittlinien (oben und unten) - außerhalb der Karte */
+.card-wrapper::before,
+.card-wrapper::after {
+  content: '';
+  position: absolute;
+  left: -5mm;
+  right: -5mm;
+  height: 0;
+  border-top: 1px dashed #999;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.card-wrapper::before {
+  top: -3mm; /* 3mm oberhalb der Karte */
+}
+
+.card-wrapper::after {
+  bottom: -3mm; /* 3mm unterhalb der Karte */
+}
+
+/* Vertikale Schnittlinien (links und rechts) - außerhalb der Karte */
+.divider-card::before,
+.divider-card::after {
+  content: '';
+  position: absolute;
+  top: -5mm;
+  bottom: -5mm;
+  width: 0;
+  border-left: 1px dashed #999;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.divider-card::before {
+  left: -3mm; /* 3mm links von der Karte */
+}
+
+.divider-card::after {
+  right: -3mm; /* 3mm rechts von der Karte */
+}
+
+/* Schnittlinien im Print-Modus anzeigen */
+@media print {
+  .card-wrapper::before,
+  .card-wrapper::after,
+  .divider-card::before,
+  .divider-card::after {
+    display: block;
+  }
+}
+
+/* Anpassungen für kleinere Bildschirme im Preview */
+@media screen and (max-width: 768px) {
+  .divider-card {
+    width: 100%;
+    height: auto;
+    min-height: 150px;
+  }
+
+  /* Schnittlinien auf mobilen Geräten ausblenden */
+  .card-wrapper::before,
+  .card-wrapper::after,
+  .divider-card::before,
+  .divider-card::after {
+    display: none;
+  }
+}

@@ -1,0 +1,52 @@
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 63mm);
+  gap: 10mm;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card-wrapper {
+  position: relative;
+}
+
+/* Responsive: 2 Spalten für Tablets */
+@media screen and (max-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+/* Responsive: 1 Spalte für Mobile */
+@media screen and (max-width: 640px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* Remove-Button verstecken im Print */
+.remove-button {
+  display: block;
+}
+
+@media print {
+  .remove-button {
+    display: none !important;
+  }
+}
+
+/* Print-Styles für PDF-Export */
+@media print {
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 63mm);
+    gap: 8mm;
+    page-break-after: always;
+  }
+
+  .card-wrapper {
+    page-break-inside: avoid;
+  }
+}

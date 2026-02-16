@@ -1,0 +1,67 @@
+<div class="divider-card bg-white border-2 border-gray-300 rounded-lg px-3 pb-4 pt-0 flex flex-col shadow-sm">
+  <!-- Oberste Zeile: Symbol, Kürzel, Datum -->
+  <div class="flex items-center justify-between mb-4 pb-2 border-b-2 border-gray-200">
+    <!-- Set Logo -->
+    <div class="flex-shrink-0">
+      @if (mtgSet().icon_svg_uri) {
+        <img
+          [src]="mtgSet().icon_svg_uri"
+          [alt]="mtgSet().name + ' Logo'"
+          class="w-8 h-8 object-contain"
+        />
+      }
+    </div>
+
+    <!-- Set Code -->
+    <div class="text-2xl font-bold text-black mx-2">
+      {{ mtgSet().code }}
+    </div>
+
+    <!-- Release Date (yyyy-mm) -->
+    <div class="text-sm text-black font-medium">
+      {{ formatDate(mtgSet().released_at) }}
+    </div>
+  </div>
+
+  <!-- Details: Set Name und weitere Infos mittig -->
+  <div class="flex-grow flex flex-col items-center justify-center space-y-2 px-2">
+    
+    
+    <!-- Set Name -->
+    <h3 class="text-3xl font-bold text-gray-900 text-center leading-tight">
+      {{ mtgSet().name }}
+    </h3>
+    <!-- Set Logo -->
+<div class="flex-shrink-0">
+  @if (mtgSet().icon_svg_uri) {
+    <img
+      [src]="mtgSet().icon_svg_uri"
+      [alt]="mtgSet().name + ' Logo'"
+      class="w-20 h-20 object-contain grayscale opacity-40"
+    />
+  }
+</div>
+
+    <!-- Set-Typ -->
+    <!-- <div class="text-sm text-black">
+      {{ translateSetType(mtgSet().set_type) }}
+    </div> -->
+
+    <!-- Block (falls vorhanden) -->
+    @if (mtgSet().block) {
+      <div class="text-xs text-gray-500 italic">
+        {{ mtgSet().block }}
+      </div>
+    }
+    <!-- Kartenzahl -->
+    <div class="text-sm text-gray-600">
+      {{ mtgSet().card_count }} Karten
+    </div>
+
+
+    <!-- Vollständiges Release-Datum -->
+    <div class="text-xl mt-1">
+      {{ formatFullDate(mtgSet().released_at) }}
+    </div>
+  </div>
+</div>
