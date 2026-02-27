@@ -4,6 +4,8 @@ import { ScryfallApi } from '../../services/scryfall-api';
 import { MtgSet } from '../../models/mtg-set.model';
 import { CommonModule } from '@angular/common';
 
+const SET_TYPE_STORAGE_KEY = 'mtg-divider-generator.input.selectedSetType';
+
 @Component({
   selector: 'app-set-input-form',
   imports: [CommonModule, FormsModule],
@@ -32,6 +34,11 @@ export class SetInputForm implements OnInit {
   availableSetTypes: { value: string; label: string }[] = [];
 
   ngOnInit(): void {
+    const savedSetType = localStorage.getItem(SET_TYPE_STORAGE_KEY);
+    if (savedSetType) {
+      this.selectedSetType = savedSetType;
+    }
+
     // Lade alle Sets beim Start
     this.scryfallApi.getAllSets().subscribe({
       next: (sets) => {
@@ -46,6 +53,13 @@ export class SetInputForm implements OnInit {
             label: this.translateSetType(type)
           })).sort((a, b) => a.label.localeCompare(b.label))
         ];
+
+        // Fallback, falls gespeicherter Typ nicht mehr verfuegbar ist
+        const isValidType = this.availableSetTypes.some(type => type.value === this.selectedSetType);
+        if (!isValidType) {
+          this.selectedSetType = 'all';
+          localStorage.setItem(SET_TYPE_STORAGE_KEY, this.selectedSetType);
+        }
       },
       error: (error) => {
         console.error('Fehler beim Laden der Sets:', error);
@@ -110,6 +124,8 @@ export class SetInputForm implements OnInit {
    * Ändert den Set-Typ-Filter
    */
   onSetTypeChange(): void {
+    localStorage.setItem(SET_TYPE_STORAGE_KEY, this.selectedSetType);
+
     // Filtere erneut mit neuem Set-Typ
     if (this.setCode.trim()) {
       this.onInput();

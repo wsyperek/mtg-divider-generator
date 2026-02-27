@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { MtgSet } from './models/mtg-set.model';
 import { SetInputForm } from './components/set-input-form/set-input-form';
 import { SetSelectorList } from './components/set-selector-list/set-selector-list';
@@ -7,6 +7,11 @@ import { PdfExporter } from './components/pdf-exporter/pdf-exporter';
 import { FormsModule } from '@angular/forms';
 
 type SortOption = 'added' | 'name' | 'date-desc' | 'date-asc';
+
+const STORAGE_KEYS = {
+  sets: 'mtg-divider-generator.sets',
+  sortOption: 'mtg-divider-generator.sortOption'
+} as const;
 
 @Component({
   selector: 'app-root',
@@ -26,6 +31,18 @@ export class App {
   // Modal-State für Set-Selektor
   protected readonly showSetSelector = signal<boolean>(false);
 
+  constructor() {
+    this.restoreState();
+
+    effect(() => {
+      localStorage.setItem(STORAGE_KEYS.sets, JSON.stringify(this.rawSets()));
+    });
+
+    effect(() => {
+      localStorage.setItem(STORAGE_KEYS.sortOption, this.sortOption());
+    });
+  }
+
   // Computed: Sortierte Sets
   protected readonly sets = computed(() => {
     const sets = [...this.rawSets()];
@@ -43,6 +60,30 @@ export class App {
         return sets;
     }
   });
+
+  private restoreState(): void {
+    const savedSets = localStorage.getItem(STORAGE_KEYS.sets);
+    if (savedSets) {
+      try {
+        const parsed = JSON.parse(savedSets);
+        if (Array.isArray(parsed)) {
+          this.rawSets.set(parsed as MtgSet[]);
+        }
+      } catch (error) {
+        console.error('Konnte gespeicherte Sets nicht laden:', error);
+      }
+    }
+
+    const savedSortOption = localStorage.getItem(STORAGE_KEYS.sortOption);
+    if (
+      savedSortOption === 'added' ||
+      savedSortOption === 'name' ||
+      savedSortOption === 'date-desc' ||
+      savedSortOption === 'date-asc'
+    ) {
+      this.sortOption.set(savedSortOption);
+    }
+  }
 
   /**
    * Fügt ein neues Set zur Liste hinzu

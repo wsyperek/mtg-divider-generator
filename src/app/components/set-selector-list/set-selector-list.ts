@@ -1,8 +1,15 @@
-import { Component, computed, inject, OnInit, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MtgSet } from '../../models/mtg-set.model';
 import { ScryfallApi } from '../../services/scryfall-api';
+
+type SortByOption = 'date-desc' | 'date-asc' | 'name-asc' | 'name-desc';
+
+const STORAGE_KEYS = {
+  selectedSetType: 'mtg-divider-generator.selector.selectedSetType',
+  sortBy: 'mtg-divider-generator.selector.sortBy'
+} as const;
 
 @Component({
   selector: 'app-set-selector-list',
@@ -18,7 +25,7 @@ export class SetSelectorList implements OnInit {
   private readonly selectedCodes = signal<Set<string>>(new Set());
   protected readonly searchQuery = signal<string>('');
   protected readonly selectedSetType = signal<string>('all');
-  protected readonly sortBy = signal<'date-desc' | 'date-asc' | 'name-asc' | 'name-desc'>('date-desc');
+  protected readonly sortBy = signal<SortByOption>('date-desc');
   protected readonly isLoading = signal<boolean>(false);
 
   // Verfügbare Set-Typen für Filter
@@ -78,8 +85,37 @@ export class SetSelectorList implements OnInit {
   setsSelected = output<MtgSet[]>();
   closeRequested = output<void>();
 
+  constructor() {
+    this.restorePersistedFilters();
+
+    effect(() => {
+      localStorage.setItem(STORAGE_KEYS.selectedSetType, this.selectedSetType());
+    });
+
+    effect(() => {
+      localStorage.setItem(STORAGE_KEYS.sortBy, this.sortBy());
+    });
+  }
+
   ngOnInit(): void {
     this.loadAllSets();
+  }
+
+  private restorePersistedFilters(): void {
+    const savedSetType = localStorage.getItem(STORAGE_KEYS.selectedSetType);
+    if (savedSetType) {
+      this.selectedSetType.set(savedSetType);
+    }
+
+    const savedSortBy = localStorage.getItem(STORAGE_KEYS.sortBy);
+    if (
+      savedSortBy === 'date-desc' ||
+      savedSortBy === 'date-asc' ||
+      savedSortBy === 'name-asc' ||
+      savedSortBy === 'name-desc'
+    ) {
+      this.sortBy.set(savedSortBy);
+    }
   }
 
   /**
@@ -105,13 +141,20 @@ export class SetSelectorList implements OnInit {
    */
   private extractSetTypes(sets: MtgSet[]): void {
     const uniqueTypes = [...new Set(sets.map(set => set.set_type))].sort();
-    this.availableSetTypes.set([
+    const setTypes = [
       { value: 'all', label: 'Alle Set-Typen' },
       ...uniqueTypes.map(type => ({
         value: type,
         label: this.translateSetType(type)
       }))
-    ]);
+    ];
+
+    this.availableSetTypes.set(setTypes);
+
+    const isValidType = setTypes.some(type => type.value === this.selectedSetType());
+    if (!isValidType) {
+      this.selectedSetType.set('all');
+    }
   }
 
   /**
