@@ -30,6 +30,8 @@ export class App {
 
   // Modal-State für Set-Selektor
   protected readonly showSetSelector = signal<boolean>(false);
+  private readonly undoSetsSnapshot = signal<MtgSet[] | null>(null);
+  protected readonly canUndo = computed(() => this.undoSetsSnapshot() !== null);
 
   constructor() {
     this.restoreState();
@@ -104,6 +106,7 @@ export class App {
     }
 
     // Set zur Liste hinzufügen
+    this.storeUndoSnapshot();
     this.rawSets.update(currentSets => [...currentSets, newSet]);
   }
 
@@ -112,6 +115,11 @@ export class App {
    */
   onSetRemoved(index: number): void {
     const setToRemove = this.sets()[index];
+    if (!setToRemove) {
+      return;
+    }
+
+    this.storeUndoSnapshot();
     this.rawSets.update(currentSets =>
       currentSets.filter(set => set.code !== setToRemove.code)
     );
@@ -149,24 +157,36 @@ export class App {
     const uniqueNewSets = newSets.filter(set => !existingCodes.has(set.code) && !set.digital);
 
     if (uniqueNewSets.length === 0) {
-      let msg = 'Keine neuen Sets hinzugefügt.';
-      if (digitalSets.length > 0) msg += ` ${digitalSets.length} digitale Set(s) wurden übersprungen.`;
-      alert(msg);
       this.closeSetSelector();
       return;
     }
 
     // Sets hinzufügen
+    this.storeUndoSnapshot();
     this.rawSets.update(current => [...current, ...uniqueNewSets]);
-
-    // Feedback und Modal schließen
-    const skippedExisting = newSets.length - (uniqueNewSets.length + digitalSets.length);
-    let messageParts: string[] = [];
-    messageParts.push(`${uniqueNewSets.length} Sets hinzugefügt.`);
-    if (skippedExisting > 0) messageParts.push(`${skippedExisting} Set(s) waren bereits vorhanden.`);
-    if (digitalSets.length > 0) messageParts.push(`${digitalSets.length} digitale Set(s) übersprungen (Arena-only).`);
-
-    alert(messageParts.join(' '));
     this.closeSetSelector();
+  }
+
+  undoLastChange(): void {
+    const snapshot = this.undoSetsSnapshot();
+    if (!snapshot) {
+      return;
+    }
+
+    this.rawSets.set(snapshot);
+    this.undoSetsSnapshot.set(null);
+  }
+
+  resetAllSets(): void {
+    if (this.rawSets().length === 0) {
+      return;
+    }
+
+    this.storeUndoSnapshot();
+    this.rawSets.set([]);
+  }
+
+  private storeUndoSnapshot(): void {
+    this.undoSetsSnapshot.set([...this.rawSets()]);
   }
 }

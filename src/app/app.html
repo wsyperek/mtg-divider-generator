@@ -27,7 +27,7 @@
     <!-- Sortierung -->
     @if (sets().length > 0) {
       <div class="bg-white shadow-md rounded-lg p-4 mb-6 print:hidden">
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 flex-wrap">
           <label for="sortOption" class="font-semibold text-gray-700">
             Sortierung:
           </label>
@@ -41,6 +41,20 @@
             <option value="date-desc">Release-Datum (neueste zuerst)</option>
             <option value="date-asc">Release-Datum (älteste zuerst)</option>
           </select>
+          <button
+            (click)="undoLastChange()"
+            [disabled]="!canUndo()"
+            class="px-4 py-2 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          >
+            Rückgängig
+          </button>
+          <button
+            (click)="resetAllSets()"
+            [disabled]="sets().length === 0"
+            class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          >
+            Reset
+          </button>
           <span class="text-sm text-gray-600 ml-auto">
             {{ sets().length }} Set(s) hinzugefügt
           </span>

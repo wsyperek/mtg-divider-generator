@@ -2,6 +2,23 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
 
+## Free Hosting (Cloudflare Pages)
+
+This app is ready to be hosted as a static Angular SPA on Cloudflare Pages.
+
+1. Push this repository to GitHub.
+2. In Cloudflare, go to `Workers & Pages` -> `Create` -> `Pages` -> `Connect to Git`.
+3. Select this repository.
+4. Use these build settings:
+   - Framework preset: `Angular` (or `None`)
+   - Build command: `npm run build`
+   - Build output directory: `dist/mtg-divider-generator/browser`
+5. Deploy.
+
+Notes:
+- A SPA fallback redirect is included in [public/_redirects](public/_redirects), so deep links route to `index.html`.
+- Any `localStorage` data (saved sets/filters) stays per browser/device, as expected on static hosting.
+
 ## Development server
 
 To start a local development server, run:
