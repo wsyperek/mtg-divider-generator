@@ -25,7 +25,9 @@ export class PdfGenerator {
       this.debugLog('Converting SVG:', svgUrl);
 
       // CORS-Proxy verwenden für Scryfall SVGs
-      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(svgUrl)}`;
+      const proxyUrl = svgUrl.includes('corsproxy.io/?')
+        ? svgUrl
+        : `https://corsproxy.io/?${encodeURIComponent(svgUrl)}`;
       this.debugLog('Using proxy:', proxyUrl);
 
       const response = await fetch(proxyUrl);

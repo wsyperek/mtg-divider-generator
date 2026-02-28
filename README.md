@@ -16,7 +16,6 @@ This app is ready to be hosted as a static Angular SPA on Cloudflare Pages.
 5. Deploy.
 
 Notes:
-- A SPA fallback redirect is included in [public/_redirects](public/_redirects), so deep links route to `index.html`.
 - Any `localStorage` data (saved sets/filters) stays per browser/device, as expected on static hosting.
 
 ## Development server

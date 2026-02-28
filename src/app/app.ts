@@ -13,6 +13,7 @@ const STORAGE_KEYS = {
   sets: 'mtg-divider-generator.sets',
   sortOption: 'mtg-divider-generator.sortOption'
 } as const;
+const ICON_PROXY_BASE_URL = 'https://corsproxy.io/?';
 
 @Component({
   selector: 'app-root',
@@ -73,7 +74,7 @@ export class App {
       try {
         const parsed = JSON.parse(savedSets);
         if (Array.isArray(parsed)) {
-          this.rawSets.set(parsed as MtgSet[]);
+          this.rawSets.set(this.normalizeLoadedSets(parsed as MtgSet[]));
         }
       } catch (error) {
         console.error('Konnte gespeicherte Sets nicht laden:', error);
@@ -192,5 +193,22 @@ export class App {
 
   private storeUndoSnapshot(): void {
     this.undoSetsSnapshot.set([...this.rawSets()]);
+  }
+
+  private normalizeLoadedSets(sets: MtgSet[]): MtgSet[] {
+    return sets.map(set => ({
+      ...set,
+      icon_svg_uri: this.toProxyUrl(set.icon_svg_uri)
+    }));
+  }
+
+  private toProxyUrl(url: string): string {
+    if (!url) {
+      return url;
+    }
+    if (url.includes('corsproxy.io/?')) {
+      return url;
+    }
+    return `${ICON_PROXY_BASE_URL}${encodeURIComponent(url)}`;
   }
 }

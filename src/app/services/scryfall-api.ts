@@ -10,6 +10,7 @@ import { MtgSet, ScryfallSetResponse } from '../models/mtg-set.model';
 export class ScryfallApi {
   private readonly http = inject(HttpClient);
   private readonly API_BASE_URL = 'https://api.scryfall.com';
+  private readonly ICON_PROXY_BASE_URL = 'https://corsproxy.io/?';
 
   /**
    * Lädt alle verfügbaren Sets von Scryfall API
@@ -46,12 +47,24 @@ export class ScryfallApi {
       code: response.code.toUpperCase(),
       name: response.name,
       released_at: response.released_at,
-      icon_svg_uri: response.icon_svg_uri,
+      icon_svg_uri: this.toProxyUrl(response.icon_svg_uri),
       digital: !!response.digital,
       set_type: response.set_type,
       card_count: response.card_count,
       block: response.block
     };
+  }
+
+  private toProxyUrl(url: string): string {
+    if (!url) {
+      return url;
+    }
+
+    if (url.includes('corsproxy.io/?')) {
+      return url;
+    }
+
+    return `${this.ICON_PROXY_BASE_URL}${encodeURIComponent(url)}`;
   }
 
   /**
