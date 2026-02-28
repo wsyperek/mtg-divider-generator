@@ -17,6 +17,14 @@
   overflow: hidden;
 }
 
+.set-name {
+  /* Maximal 3 Zeilen für den Set-Namen */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* Schnittlinien - nur sichtbar im Print und Screen (nicht im PDF-Export) */
 .card-wrapper {
   position: relative;
@@ -27,9 +35,11 @@
 /* Anpassungen für kleinere Bildschirme im Preview */
 @media screen and (max-width: 768px) {
   .divider-card {
-    width: 100%;
-    height: auto;
-    min-height: 150px;
+    /* Auf Mobile gleiche Kartenlänge beibehalten */
+    width: min(100%, 63mm);
+    height: 99mm;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Keine Schnittlinien auf mobilen Geräten */

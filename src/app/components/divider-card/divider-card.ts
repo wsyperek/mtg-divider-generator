@@ -12,20 +12,20 @@ export class DividerCard {
   // Input Property für Set-Daten
   mtgSet = input.required<MtgSet>();
 
-  getSetNameClass(): string {
+  getSetNameSize(): 'sm' | 'md' | 'lg' | 'xl' {
     const nameLength = this.mtgSet().name.length;
 
     if (nameLength > 55) {
-      return 'text-lg';
+      return 'sm';
     }
     if (nameLength > 42) {
-      return 'text-xl';
+      return 'md';
     }
     if (nameLength > 30) {
-      return 'text-2xl';
+      return 'lg';
     }
 
-    return 'text-3xl';
+    return 'xl';
   }
 
   onLogoError(event: Event): void {
