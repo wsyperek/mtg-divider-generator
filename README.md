@@ -74,3 +74,18 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Changelog
+
+### 2026-02-28
+
+- Added local persistence via `localStorage` for:
+  - selected MTG sets
+  - app sort option
+  - combo-box/filter selections in input form and set-selector modal
+- Removed modal confirmation popups after batch-selecting sets.
+- Added `Rückgängig` (undo) button for the last list change.
+- Added `Reset` button to clear all selected sets (undoable).
+- Fixed PDF export alignment/blank output for 1-2 cards by capturing the actual grid width/columns.
+- Added Cloudflare Pages SPA fallback (`public/_redirects`) and deployment notes.
+- Reduced PDF export console noise with a `PDF_DEBUG` flag in `pdf-generator.ts`.
