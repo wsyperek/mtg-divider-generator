@@ -21,6 +21,9 @@ const STORAGE_KEYS = {
 })
 export class App {
   protected readonly title = 'MTG Divider Cards Generator';
+  protected readonly appVersion = '0.0.0';
+  protected readonly imprintName = 'Wolfram Syperek';
+  protected readonly imprintEmail = 'wsyperek@gmail.com';
 
   // State: Liste der hinzugefügten MTG Sets
   private readonly rawSets = signal<MtgSet[]>([]);
