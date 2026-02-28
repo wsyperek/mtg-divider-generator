@@ -31,7 +31,9 @@ export class SetInputForm implements OnInit {
 
   // Filter State
   selectedSetType = 'all'; // 'all' oder spezifischer Set-Typ
-  availableSetTypes: { value: string; label: string }[] = [];
+  availableSetTypes: { value: string; label: string }[] = [
+    { value: 'all', label: 'Alle Set-Typen' }
+  ];
 
   ngOnInit(): void {
     const savedSetType = localStorage.getItem(SET_TYPE_STORAGE_KEY);

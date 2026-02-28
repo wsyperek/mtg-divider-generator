@@ -30,7 +30,7 @@
     
     
     <!-- Set Name -->
-    <h3 class="text-3xl font-bold text-gray-900 text-center leading-tight">
+    <h3 [class]="getSetNameClass() + ' font-bold text-gray-900 text-center leading-tight break-words'">
       {{ mtgSet().name }}
     </h3>
     <!-- Set Logo -->

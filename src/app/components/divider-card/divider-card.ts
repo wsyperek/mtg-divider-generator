@@ -12,6 +12,22 @@ export class DividerCard {
   // Input Property für Set-Daten
   mtgSet = input.required<MtgSet>();
 
+  getSetNameClass(): string {
+    const nameLength = this.mtgSet().name.length;
+
+    if (nameLength > 55) {
+      return 'text-lg';
+    }
+    if (nameLength > 42) {
+      return 'text-xl';
+    }
+    if (nameLength > 30) {
+      return 'text-2xl';
+    }
+
+    return 'text-3xl';
+  }
+
   onLogoError(event: Event): void {
     const img = event.target as HTMLImageElement;
     if (!img || !img.src) {

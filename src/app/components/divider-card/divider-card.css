@@ -12,6 +12,9 @@
 
   /* Position für Schnittlinien */
   position: relative;
+
+  /* Verhindert, dass Inhalt die Kartenhöhe optisch erweitert */
+  overflow: hidden;
 }
 
 /* Schnittlinien - nur sichtbar im Print und Screen (nicht im PDF-Export) */
