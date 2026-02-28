@@ -12,6 +12,21 @@ export class DividerCard {
   // Input Property für Set-Daten
   mtgSet = input.required<MtgSet>();
 
+  onLogoError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (!img || !img.src) {
+      return;
+    }
+
+    const usedProxy = img.dataset['proxyFallback'] === 'true';
+    if (usedProxy) {
+      return;
+    }
+
+    img.dataset['proxyFallback'] = 'true';
+    img.src = `https://corsproxy.io/?${encodeURIComponent(img.src)}`;
+  }
+
   /**
    * Formatiert das Datum von YYYY-MM-DD zu YYYY-MM für die Kopfzeile
    */

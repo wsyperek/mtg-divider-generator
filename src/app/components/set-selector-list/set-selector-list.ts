@@ -269,4 +269,19 @@ export class SetSelectorList implements OnInit {
   isSelected(code: string): boolean {
     return this.selectedCodes().has(code);
   }
+
+  onSetLogoError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (!img || !img.src) {
+      return;
+    }
+
+    const usedProxy = img.dataset['proxyFallback'] === 'true';
+    if (usedProxy) {
+      return;
+    }
+
+    img.dataset['proxyFallback'] = 'true';
+    img.src = `https://corsproxy.io/?${encodeURIComponent(img.src)}`;
+  }
 }

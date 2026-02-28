@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "sync-version": "node scripts/write-version.mjs",
+    "prestart": "npm run sync-version",
+    "prebuild": "npm run sync-version",
+    "prewatch": "npm run sync-version",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",

@@ -5,6 +5,7 @@ import { SetSelectorList } from './components/set-selector-list/set-selector-lis
 import { CardsGrid } from './components/cards-grid/cards-grid';
 import { PdfExporter } from './components/pdf-exporter/pdf-exporter';
 import { FormsModule } from '@angular/forms';
+import { APP_VERSION } from './app-version';
 
 type SortOption = 'added' | 'name' | 'date-desc' | 'date-asc';
 
@@ -21,7 +22,7 @@ const STORAGE_KEYS = {
 })
 export class App {
   protected readonly title = 'MTG Divider Cards Generator';
-  protected readonly appVersion = '0.0.0';
+  protected readonly appVersion = APP_VERSION;
   protected readonly imprintName = 'Wolfram Syperek';
   protected readonly imprintEmail = 'wsyperek@gmail.com';
 

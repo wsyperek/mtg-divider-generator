@@ -7,6 +7,8 @@
         <img
           [src]="mtgSet().icon_svg_uri"
           [alt]="mtgSet().name + ' Logo'"
+          (error)="onLogoError($event)"
+          referrerpolicy="no-referrer"
           class="w-8 h-8 object-contain"
         />
       }
@@ -37,6 +39,8 @@
     <img
       [src]="mtgSet().icon_svg_uri"
       [alt]="mtgSet().name + ' Logo'"
+      (error)="onLogoError($event)"
+      referrerpolicy="no-referrer"
       class="w-20 h-20 object-contain grayscale opacity-40"
     />
   }

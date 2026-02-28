@@ -133,6 +133,8 @@
                 <img
                   [src]="set.icon_svg_uri"
                   [alt]="set.name + ' Logo'"
+                  (error)="onSetLogoError($event)"
+                  referrerpolicy="no-referrer"
                   class="w-8 h-8 object-contain"
                 />
               } @else {
