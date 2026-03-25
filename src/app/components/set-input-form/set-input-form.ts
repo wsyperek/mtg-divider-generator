@@ -235,7 +235,18 @@ export class SetInputForm implements OnInit {
       return;
     }
 
+    const marker = 'corsproxy.io/?';
+    const markerIndex = img.src.indexOf(marker);
+    if (markerIndex === -1) {
+      return;
+    }
+
     img.dataset['proxyFallback'] = 'true';
-    img.src = `https://corsproxy.io/?${encodeURIComponent(img.src)}`;
+    const encodedTarget = img.src.slice(markerIndex + marker.length);
+    try {
+      img.src = decodeURIComponent(encodedTarget);
+    } catch {
+      img.src = encodedTarget;
+    }
   }
 }

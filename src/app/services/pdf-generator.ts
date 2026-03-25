@@ -21,16 +21,10 @@ export class PdfGenerator {
    */
   private async convertSvgToDataUrl(imgElement: HTMLImageElement): Promise<string> {
     try {
-      const svgUrl = imgElement.src;
+      const svgUrl = this.unwrapProxyUrl(imgElement.src);
       this.debugLog('Converting SVG:', svgUrl);
 
-      // CORS-Proxy verwenden für Scryfall SVGs
-      const proxyUrl = svgUrl.includes('corsproxy.io/?')
-        ? svgUrl
-        : `https://corsproxy.io/?${encodeURIComponent(svgUrl)}`;
-      this.debugLog('Using proxy:', proxyUrl);
-
-      const response = await fetch(proxyUrl);
+      const response = await fetch(svgUrl);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
@@ -264,6 +258,21 @@ export class PdfGenerator {
     } catch (error) {
       console.error('Fehler beim Generieren des PDFs:', error);
       throw new Error('PDF-Generierung fehlgeschlagen');
+    }
+  }
+
+  private unwrapProxyUrl(url: string): string {
+    const marker = 'corsproxy.io/?';
+    const markerIndex = url.indexOf(marker);
+    if (markerIndex === -1) {
+      return url;
+    }
+
+    const encodedTarget = url.slice(markerIndex + marker.length);
+    try {
+      return decodeURIComponent(encodedTarget);
+    } catch {
+      return encodedTarget;
     }
   }
 
